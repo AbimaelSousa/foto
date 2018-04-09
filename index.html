@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang='pt'>
+<head>
+	<title>Foto</title>
+	<meta charset='utf-8'>
+	<style>
+		#c{display: none;}
+		
+	</style>
+</head>
+<body>
+
+	<div style="border:3px dotted #A52A2A">
+	<img src="" id='img'>
+	<video id='v'></video>
+	<canvas id='c'></canvas>
+	</div>
+	
+	<div style="background-color:#A52A2A;text-align:center">
+	<button id='t'>Tirar foto</button>
+	<a href="#img" class="button" id="btn-download" download="my-file-name.jpg"><button>Salvar foto</button></a>
+	</div>
+		<script>
+		window.addEventListener('load',init);
+		function init(){
+			var video = document.querySelector('#v'), canvas = document.querySelector('#c'),
+			btn = document.querySelector('#t'), img = document.querySelector('#img'), btn1 = document.querySelector('#s');
+			
+			navigator.getUserMedia = (navigator.getUserMedia||
+                       navigator.webkitGetUserMedia||
+                       navigator.mozGetUserMedia||
+                       navigator.msGetUserMedia);		
+			
+			if(navigator.getUserMedia){
+				navigator.getUserMedia({video:true},function(stream){
+				video.src = window.URL.createObjectURL(stream);
+				video.play();
+				},function(e){console.log(e);})
+			}
+			else alert('Seu navegador não suporta essa aplicação');
+			video.addEventListener('loadedmetadata',function(){canvas.width = video.videoWidth; canvas.height = video.videoHeight;},false);
+			
+			//teste variavel
+		var button = document.getElementById('btn-download');
+		button.addEventListener('click', function (e) {
+		var dataURL = canvas.toDataURL('image/jpg');
+		button.href = dataURL;
+		});			
+		
+			//botoes	
+			btn.addEventListener('click',function(){
+				canvas.getContext('2d').drawImage(video,0,0);
+				var imgData = canvas.toDataURL('image/jpg');
+				img.setAttribute('src',imgData);
+				});	
+				
+				
+				// salva imagem
+			//btn1.addEventListener('click', function(){
+				//this.href = imgData; // source
+				//this.download = 'image.jpeg'; // nome da imagem
+				//return false;
+			//}
+				
+
+			
+				
+		}	
+			
+		
+	
+	</script>
+	
+	
+</body>
+</html>
